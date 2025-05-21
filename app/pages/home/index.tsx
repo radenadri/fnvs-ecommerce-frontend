@@ -8,7 +8,7 @@ export default function Home() {
     <main className="grow">
       <section id="section-product-lists">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-2">
-          <section>
+          <section className="mb-4 md:mb-0">
             <div className="flex flex-col h-full">
               <h1 className="text-lg text-neutral-600 font-mono tracking-tight uppercase text-balance">
                 Finvise, the web-based product landing page

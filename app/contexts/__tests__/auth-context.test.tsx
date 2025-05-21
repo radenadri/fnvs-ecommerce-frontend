@@ -101,7 +101,9 @@ describe('AuthContext', () => {
     window.confirm = vi.fn(() => true);
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: /login/i })
+      ).toBeInTheDocument();
     });
   });
 });

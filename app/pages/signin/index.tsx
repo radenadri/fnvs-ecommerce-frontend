@@ -4,7 +4,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import clsx from 'clsx';
 
-interface ILoginFormInput {
+export interface ILoginFormInput {
   email: string;
   password: string;
 }
