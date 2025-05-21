@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuthProvider, useAuth } from '../auth-context';
 
 const mockUser = {
@@ -9,9 +10,9 @@ const mockUser = {
 };
 
 // Mock axios
-jest.mock('axios', () => ({
-  post: jest.fn(),
-  get: jest.fn(),
+vi.mock('axios', () => ({
+  post: vi.fn(),
+  get: vi.fn(),
 }));
 
 const TestComponent = () => {
@@ -33,6 +34,11 @@ const TestComponent = () => {
 };
 
 describe('AuthContext', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    localStorage.clear();
+  });
+
   it('provides authentication context to children', async () => {
     render(
       <AuthProvider>
@@ -43,5 +49,59 @@ describe('AuthContext', () => {
     expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
   });
 
-  // Add more tests for login, logout, and error handling
+  it('handles login successfully', async () => {
+    const mockAxiosPost = vi.mocked(require('axios').post);
+    mockAxiosPost.mockResolvedValueOnce({
+      data: {
+        success: true,
+        data: {
+          token: 'test-token',
+          user: mockUser,
+        },
+      },
+    });
+
+    render(
+      <AuthProvider>
+        <TestComponent />
+      </AuthProvider>
+    );
+
+    const loginButton = screen.getByRole('button', { name: /login/i });
+    fireEvent.click(loginButton);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('user-name')).toHaveTextContent('John Doe');
+    });
+  });
+
+  it('handles logout successfully', async () => {
+    // Setup initial logged in state
+    localStorage.setItem('user', JSON.stringify(mockUser));
+    localStorage.setItem('token', mockUser.token);
+
+    const mockAxiosPost = vi.mocked(require('axios').post);
+    mockAxiosPost.mockResolvedValueOnce({});
+
+    render(
+      <AuthProvider>
+        <TestComponent />
+      </AuthProvider>
+    );
+
+    // Wait for the user to be loaded from localStorage
+    await waitFor(() => {
+      expect(screen.getByTestId('user-name')).toBeInTheDocument();
+    });
+
+    const logoutButton = screen.getByRole('button', { name: /logout/i });
+    fireEvent.click(logoutButton);
+
+    // Mock the confirm dialog
+    window.confirm = vi.fn(() => true);
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
+    });
+  });
 });
