@@ -2,6 +2,10 @@
 
 A modern product landing page built with React, TypeScript, and Tailwind CSS. This project showcases a scalable and user-friendly product listing platform with authentication features.
 
+## Screenshot
+
+![Screenshot](screenshoot/homepage.png)
+
 ## About
 
 This is a technical assessment project that demonstrates a web-based product listing platform. It features a modern UI, secure authentication, and responsive design to provide an optimal shopping experience across all devices.
