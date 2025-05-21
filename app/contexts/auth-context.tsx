@@ -56,10 +56,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
 
         setUser({
-          ...data,
           id: data.id,
           name: data.name,
           email: data.email,
+          token: token,
         });
       } catch (err) {
         console.error('Failed to check authentication :', err);

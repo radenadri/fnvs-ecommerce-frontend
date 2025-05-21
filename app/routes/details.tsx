@@ -25,7 +25,6 @@ export default function DetailsPage({ loaderData }: Route.ComponentProps) {
 
   useEffect(() => {
     if (!user) {
-      console.log('user not found');
       navigate('/signin');
     }
   }, []);
